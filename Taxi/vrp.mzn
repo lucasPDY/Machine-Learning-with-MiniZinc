@@ -4,15 +4,6 @@
 
 % Location data
 
-% Each customer is represented as a pair of x and y coordinates.
-% The final location is that of the depot.
-
-% x coordinates of location
-% array[int] of float: locX;
-% % y coordinates of location
-% array[int] of float: locY;
-
-
 % Locations
 int: NumLocs;
 set of int: Locations = 1..NumLocs;
@@ -29,22 +20,7 @@ set of int: Vehicles = 1..NumRoutes;  % One Vehicle for each Route
 
 % Survey Time
 % We assume that the amount of time it takes to do a survey is constant, e.g. 70000 seconds
-int: surveyTime = 1800;
-
-
-% % Euclidian distance between locations, computed from
-% % x/y coordinates
-% array [Locations, Locations] of int: dist = 
-%     array2d (
-%         Locations, Locations,
-%         [ round (1000.0 * sqrt( (locX[a] - locX[b]) * (locX[a] - locX[b]) +
-%                                 (locY[a] - locY[b]) * (locY[a] - locY[b]))
-%           )
-%         | a, b in Locations
-%         ]
-%     );
-
-
+int: surveyTime;
 
 
 % =====================================
@@ -62,6 +38,7 @@ set of int: LeaveSurvey = N+1..2*N;
 % At the worst case, A taxi will visit all survey nodes
 set of int: TaxiStart1 = 2*N+1..4*N;  % All Starting Nodes for Taxi 1
 set of int: TaxiStart2  = 4*N+1..6*N; % All Starting Nodes for Taxi 2
+set of int: Taxi = 1..4*N; % All Taxis
 set of int: TaxiEnd1 = 6*N+1..8*N; % All Ending Nodes for Taxi 1
 set of int: TaxiEnd2 = 8*N+1..10*N; % All Ending Nodes for Taxi 2
 
@@ -108,18 +85,18 @@ var int: objective = max(time);
 % =====================================
 
 % Assign each vehicle depot start node to its route
-constraint forall (k in 1..4*N) ( routeOf[2*N + k] = k);
+constraint forall (k in Taxi) ( routeOf[2*N + k] = k);
 
 % Assign each vehicle depot end node to its route
-constraint forall (k in 1..4*N) ( routeOf[6*N + k] = k);
+constraint forall (k in Taxi) ( routeOf[6*N + k] = k);
 
 % The successors form a circuit (grand tour representation)
 constraint circuit (successor) ::domain;
 
-% successor of end is start of next, wraps around to first depot node
+% successor of an ending taxi node is the next starting taxi node, wraps around to first depot node
 constraint
-  forall (k in 1..4*N)
-    ( successor[2 * N + 4 * N + k] = ( 2*N + 1 + (k mod NumRoutes) ) );
+  forall (k in Taxi)
+    ( successor[6*N + k] = ( 2*N + 1 + (k mod NumRoutes) ) );
 
 % Successor of starting survey node can only be a depot node or an ending survey node
 constraint forall(k in ArriveSurvey)(successor[k] > N);

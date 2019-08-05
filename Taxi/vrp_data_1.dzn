@@ -1,6 +1,7 @@
 
 % NumVehicles = 3;
 NumLocs = 5;
+surveyTime = 1800;
 
 dist = [|0, 2913, 1446, 1607, 815
  |2427, 0, 2582, 2345,2354 
