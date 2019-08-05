@@ -155,7 +155,7 @@ solve
   minimize (objective);
 
 output
-[ "duration = ", show(objective), "\n" ] ++
+[ "objective = ", show(objective), "\n" ] ++
 [ "successor = ", show(successor), ";\n" ] ++
 [ "routeOf = ", show(routeOf), ";\n"] 
 ++ [ "time = ", show(time), ";\n"]
