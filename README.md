@@ -16,4 +16,4 @@ MiniZinc was used to solve a satisfaction problem involving minimizing the amoun
 
 For any questions, feel free to create an issue or PR.
 
-### Machine-Learning-with-MiniZinc was created by De Yuan Phang (Lucas Phang) and Lillie Esther as part of the Monash University Winter Vacation Research Project 
+### Machine-Learning-with-MiniZinc was created by De Yuan Phang ([Lucas Phang](https://github.com/lucasPDY)) and [Lillie Esther](https://github.com/liliesterw) as part of the Monash University Winter Vacation Research Project 
